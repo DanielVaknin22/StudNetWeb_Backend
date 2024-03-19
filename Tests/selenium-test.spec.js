@@ -21,10 +21,10 @@ import assert from 'assert';
     await driver.findElement(By.css('input.sc-dnwKUv.cCgyge')).sendKeys('Hello, World! from Selenium');
     await driver.findElement(By.css('button.sc-kgKVFY.fEkNUb')).click();
     await driver.wait(until.elementLocated(By.css('div.sc-fmSAUk.fmdfzI')), 10000);
-    const post = await driver.findElement(By.css('div.sc-fmSAUk.fmdfzI'));
-    assert.equal(post, 'Hello, World! from Selenium');
-    
-
+    await driver.sleep(9000); // Wait for 2 seconds
+    const post = await driver.findElement(By.css('h3.sc-fbJfA.sc-fGFwAa.eQTEMi.EdAWX'));
+    const text = await post.getText();
+    assert.equal(text, 'Hello, World! from Selenium'); // Assert the text content of the post
     console.log('Test passed!');
   } catch (e) {
     console.error('Test failed:', e);
