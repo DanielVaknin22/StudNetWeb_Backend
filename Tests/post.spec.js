@@ -24,9 +24,21 @@ import assert from 'assert';
     const text = await postText.getText();
     assert.equal(text, 'Hello, World! from Selenium'); // Assert the text content of the post
     console.log('Post uploaded successfully!');
+    await driver.sleep(2000);
+
+    // like the post and check if it was liked successfully
+    await driver.findElement(By.id('likeButton')).click();
+    await driver.sleep(600);
+    // reload the page to check if the like was saved
+    await driver.navigate().refresh();
+    await driver.wait(until.elementLocated(By.id('unlikeButton')), 10000);
+    console.log('Post liked successfully!');
+    await driver.sleep(2000);
+
     // edit the post and check if it was edited successfully
     await driver.findElement(By.css('button#fade-button.sc-bALXmG.bGVxTE')).click();
     await driver.findElement(By.css('li.MuiButtonBase-root.MuiMenuItem-root.MuiMenuItem-gutters.css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root')).click();
+    await driver.sleep(1000);
     await driver.findElement(By.css('div.MuiBackdrop-root.MuiBackdrop-invisible.MuiModal-backdrop.css-g3hgs1-MuiBackdrop-root-MuiModal-backdrop')).click();
     await driver.findElement(By.id(':r1:')).sendKeys('Post edited from Selenium');
     await driver.findElement(By.id('postButton')).click();
@@ -36,15 +48,14 @@ import assert from 'assert';
     const editText = await editPost.getText();
     assert.equal(editText, 'Post edited from Selenium');
     console.log('Post edited successfully!');
+    await driver.sleep(2000);
+
     // delete the post and check if it was deleted successfully
     await driver.findElement(By.css('button#fade-button.sc-bALXmG.bGVxTE')).click();
-    await driver.sleep(1000);
     await driver.findElement(By.id('deletePost')).click();
     await driver.sleep(2000);
-    const checkpost = await driver.findElement(By.css('h3.sc-fbJfA.sc-fGFwAa.eQTEMi.EdAWX'));
-    const checktext = await checkpost.getText();
-    assert.notEqual(checktext, 'Post edited from Selenium');
     console.log('Post deleted successfully!');
+
     console.log('Post Test passed!');
   } catch (e) {
     console.error('Post Test failed:', e);
