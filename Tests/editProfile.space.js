@@ -53,13 +53,13 @@ import assert from 'assert';
     // Wait for a short duration to ensure the options are visible
     await driver.sleep(500);
     // Find the option corresponding to "Fourth year" and click on it
-    await driver.findElement(By.xpath('//div[name="Fourth year"]')).click();
+    await driver.findElement(By.xpath('//li[text()="Fourth year"]')).click();
 
-
-    await driver.findElement(By.css('input[name="aboutMySelf"]')).sendKeys('I am a software engineering student at SCE');
+    await driver.findElement(By.css('input[autocomplete="aboutMySelf"]')).sendKeys('I am a software engineering student at SCE');
     await driver.findElement(By.css('input[name="phoneNumber"]')).sendKeys('0503698456');
     await driver.sleep(1000);
     await driver.findElement(By.css('button.saveButton')).click();
+    await driver.sleep(2000);
 
 
     //   await driver.sleep(9000); // Wait for 2 seconds
