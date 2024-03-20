@@ -1,7 +1,7 @@
 import { Builder, By, until } from 'selenium-webdriver';
 import assert from 'assert';
 
-(async function teststudnet() {
+(async function editProfile() {
   let driver;
 
   try {
@@ -12,7 +12,7 @@ import assert from 'assert';
 
     // login and check if the user is redirected to the home page
     await driver.findElement(By.css('input[type="email"]')).sendKeys('maorhadad94@gmail.com');
-    await driver.findElement(By.css('input[type="password"]')).sendKeys('Maor123456789');
+    await driver.findElement(By.css('input[type="password"]')).sendKeys('Maor1122334455');
     await driver.findElement(By.css('button.sc-eACynP.ipNQrM')).click();
 
     await driver.wait(until.urlIs('http://localhost:3000/#/home'), 10000);
@@ -35,17 +35,30 @@ import assert from 'assert';
     // await driver.sleep(5000)
 
     // Editing the password
-    // await driver.findElement(By.css('tab.react-tabs__tab-list')).click();
     // Click on the "Password" tab
     await driver.findElement(By.css('.react-tabs__tab-list > .react-tabs__tab:nth-child(2)')).click();
     await driver.sleep(1000);
-    // Enter current password
-    await driver.findElement(By.css('input[type="password"]')).sendKeys('Maor123456789');
-    // Enter new password
-    await driver.findElement(By.css('input.sc-bZPPFW.bXLETh')).sendKeys('Maor1122334455');
-    // Confirm new password
-    await driver.findElement(By.css('input.sc-kMrHXl kOSmeY')).sendKeys('Maor1122334455');
-    // Click on the save button
+    await driver.findElement(By.css('input[placeholder="Current Password"]')).sendKeys('Maor123456789');
+    await driver.findElement(By.css('input[placeholder="New Password"]')).sendKeys('Maor1122334455');
+    await driver.findElement(By.css('input[placeholder="Re-enter New Password"]')).sendKeys('Maor1122334455');
+    await driver.findElement(By.css('button.saveButton')).click();
+
+    // edit personal details
+    await driver.findElement(By.css('.react-tabs__tab-list > .react-tabs__tab:nth-child(3)')).click();
+    await driver.findElement(By.css('button.accountButton')).click();
+    await driver.sleep(1000);
+    await driver.findElement(By.css('input[name="country"]')).sendKeys('Israel');
+    await driver.findElement(By.css('input[name="studySubject"]')).sendKeys('Software Engineering');
+    await driver.findElement(By.id('mui-component-select-schoolYear')).click();
+    // Wait for a short duration to ensure the options are visible
+    await driver.sleep(500);
+    // Find the option corresponding to "Fourth year" and click on it
+    await driver.findElement(By.xpath('//div[name="Fourth year"]')).click();
+
+
+    await driver.findElement(By.css('input[name="aboutMySelf"]')).sendKeys('I am a software engineering student at SCE');
+    await driver.findElement(By.css('input[name="phoneNumber"]')).sendKeys('0503698456');
+    await driver.sleep(1000);
     await driver.findElement(By.css('button.saveButton')).click();
 
 
