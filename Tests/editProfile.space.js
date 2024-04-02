@@ -47,27 +47,44 @@ import assert from 'assert';
     await driver.findElement(By.css('.react-tabs__tab-list > .react-tabs__tab:nth-child(3)')).click();
     await driver.findElement(By.css('button.accountButton')).click();
     await driver.sleep(1000);
+    // await driver.findElement(By.css('input[name="Profile Picture"]')).click();
     await driver.findElement(By.css('input[name="country"]')).sendKeys('Israel');
     await driver.findElement(By.css('input[name="studySubject"]')).sendKeys('Software Engineering');
     await driver.findElement(By.id('mui-component-select-schoolYear')).click();
-    // Wait for a short duration to ensure the options are visible
     await driver.sleep(500);
+    // Wait for a short duration to ensure the options are visible
     // Find the option corresponding to "Fourth year" and click on it
     await driver.findElement(By.xpath('//li[text()="Fourth year"]')).click();
-    await driver.sleep(500);
-
-    await driver.findElement(By.css('input[name="aboutMySelf"]')).sendKeys('I am a software engineering student at SCE');
+    await driver.sleep(1000);
+    await driver.findElement(By.id(':r3:')).sendKeys('I am a software engineering student at SCE');
+    await driver.sleep(1000);
     await driver.findElement(By.css('input[name="phoneNumber"]')).sendKeys('0503698456');
     await driver.sleep(1000);
-    await driver.findElement(By.css('button.saveButton')).click();
+    await driver.findElement(By.css('button.accountButton')).click();
     await driver.sleep(2000);
 
+    //Followers
+    await driver.findElement(By.css('.react-tabs__tab-list > .react-tabs__tab:nth-child(4)')).click();
+    await driver.sleep(1000);
 
-    //   await driver.sleep(9000); // Wait for 2 seconds
-    //   const post = await driver.findElement(By.css('h3.sc-fbJfA.sc-fGFwAa.eQTEMi.EdAWX'));
-    //   const text = await post.getText();
-    //   assert.equal(text, 'Hello, World! from Selenium'); // Assert the text content of the post
+    //Following
+    await driver.findElement(By.css('.react-tabs__tab-list > .react-tabs__tab:nth-child(5)')).click();
+    await driver.sleep(1000);
 
+    //Posts Liked
+    await driver.findElement(By.css('.react-tabs__tab-list > .react-tabs__tab:nth-child(6)')).click();
+    await driver.sleep(1000);
+
+    //Post Saved
+    await driver.findElement(By.css('.react-tabs__tab-list > .react-tabs__tab:nth-child(7)')).click();
+    await driver.sleep(1000);
+
+    //Statistics
+    await driver.findElement(By.css('.react-tabs__tab-list > .react-tabs__tab:nth-child(8)')).click();
+    await driver.sleep(1000);
+
+
+    
     console.log('Test passed!');
   } catch (e) {
     console.error('Test failed:', e);
