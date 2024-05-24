@@ -15,20 +15,20 @@ jobs:
           name: Install npm packages
           command: npm install
       - run:
-          name: Install ChromeDriver
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y wget unzip
-            wget -N https://chromedriver.storage.googleapis.com/96.0.4664.45/chromedriver_linux64.zip
-            unzip chromedriver_linux64.zip -d /usr/local/bin/
-            rm chromedriver_linux64.zip
-      - run:
           name: Install Google Chrome
           command: |
             wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
             sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
             sudo apt-get update
-            sudo apt-get install -y google-chrome-stable=96.0.4664.45-1
+            sudo apt-get install -y google-chrome-stable
+      - run:
+          name: Install ChromeDriver
+          command: |
+            CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+\.\d+')
+            CHROMEDRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION)
+            wget -N https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
+            unzip chromedriver_linux64.zip -d /usr/local/bin/
+            rm chromedriver_linux64.zip
       - run:
           name: Run tests
           command: npm run test
