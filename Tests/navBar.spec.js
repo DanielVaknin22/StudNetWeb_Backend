@@ -19,7 +19,7 @@ import assert from 'assert';
     const currentUrl = await driver.getCurrentUrl();
     assert.equal(currentUrl, 'http://localhost:3000/#/home');
 
-    // Getting to Nav Bar
+    // Getting to Nav Bar && profile page
     await driver.sleep(1000);
     await driver.get('http://localhost:3000/#/profile');
     await driver.sleep(2000);
