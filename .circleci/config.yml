@@ -15,7 +15,7 @@ jobs:
           name: Install npm packages
           command: npm install
       - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
+      
       - run:
           name: Run tests
           command: npm run test
