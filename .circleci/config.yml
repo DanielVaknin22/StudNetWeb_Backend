@@ -11,8 +11,10 @@ jobs:
       tag: '16.20.0' # Specify the Node.js version
     steps:
       - checkout
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
+      - browser-tools/install-chrome:
+          version: "stable" # Use the stable version of Chrome
+      - browser-tools/install-chromedriver:
+          chrome-version: "stable" # Ensure Chromedriver matches the Chrome version
       - run:
           name: Install npm packages
           command: npm install
