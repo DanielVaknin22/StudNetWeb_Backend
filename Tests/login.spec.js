@@ -10,9 +10,9 @@ import assert from 'assert';
     const title = await driver.getTitle();
     assert.equal(title, 'StudNet - Social Network');
 
-   // forgot password with invalid email
+    // forgot password with invalid email
     await driver.findElement(By.xpath('//*[@id="root"]/div/div/label[3]/a')).click();
-    
+
     await driver.wait(until.urlIs('http://localhost:3000/#/login/:fpass'), 10000);
     const currentUrl1 = await driver.getCurrentUrl();
     assert.equal(currentUrl1, 'http://localhost:3000/#/login/:fpass');
@@ -22,9 +22,9 @@ import assert from 'assert';
     await driver.sleep(1000);
     const valid = await driver.findElement(By.xpath('//*[@id="root"]/div/div/div/h3')).getText();
     assert.equal(valid, 'Invalid email!');
-    
+
     console.log('forgot password invalid email Test passed!');
-    
+
     // forgot password with valid email
     await driver.findElement(By.xpath('//*[@id="root"]/div/div/div/div/input')).clear();
     await driver.findElement(By.xpath('//*[@id="root"]/div/div/div/div/input')).sendKeys('raphael2gb@gmail.com');
@@ -34,8 +34,8 @@ import assert from 'assert';
     assert.equal(valid2, 'A password recovery email has been successfully sent!');
     console.log('forgot password valid email Test passed!');
     await driver.get('http://localhost:3000/#/login');
-    
-    //check the redirection to the register page
+
+    // check the redirection to the register page
     await driver.findElement(By.xpath('//*[@id="root"]/div/div/label[4]/a')).click();
     await driver.wait(until.urlIs('http://localhost:3000/#/signUp'), 10000);
     const currentUrl2 = await driver.getCurrentUrl();
@@ -55,7 +55,6 @@ import assert from 'assert';
     assert.equal(currentUrl, 'http://localhost:3000/#/home');
 
     console.log('login Test passed!');
-   
   } catch (e) {
     console.error('login Test failed:', e);
   } finally {
