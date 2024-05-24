@@ -23,14 +23,19 @@ import assert from 'assert';
     await driver.sleep(1000);
     await driver.get('http://localhost:3000/#/profile');
     await driver.sleep(2000);
+    // Gatting to the search page
     await driver.get('http://localhost:3000/#/search');
     await driver.sleep(2000);
+    // Getting to the tools page
     await driver.get('http://localhost:3000/#/tools');
     await driver.sleep(2000);
+    // Getting to the terms page
     await driver.get('http://localhost:3000/#/terms');
     await driver.sleep(2000);
+    // Getting to the about page
     await driver.get('http://localhost:3000/#/about');
     await driver.sleep(2000);
+    // Getting to the contact page
     await driver.get('http://localhost:3000/#/terms');
     
     
