@@ -24,8 +24,11 @@ jobs:
       - run:
           name: Install ChromeDriver
           command: |
-            CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+\.\d+')
-            CHROMEDRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION)
+            sudo apt-get update
+            sudo apt-get install -y wget unzip
+            CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+' | head -1)
+            MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d '.' -f 1)
+            CHROMEDRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE_$MAJOR_VERSION)
             wget -N https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
             unzip chromedriver_linux64.zip -d /usr/local/bin/
             rm chromedriver_linux64.zip
@@ -35,7 +38,7 @@ jobs:
       - run:
           name: Run linter
           command: npm run lint
-      - run: 
+      - run:
           name: CD - Deploy the service
           command: curl "https://api.render.com/deploy/srv-cggq95u4daddcg5bi3lg?key=RGWdF_OJ_JI"
 
