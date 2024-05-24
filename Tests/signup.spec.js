@@ -1,9 +1,21 @@
 import { Builder, By, Key, until } from 'selenium-webdriver';
 import assert from 'assert';
+import chrome from 'selenium-webdriver/chrome.js';
+
 import { randomInt } from 'crypto';
 
 async function signUpTest() {
-    let driver = await new Builder().forBrowser('chrome').build();
+    let driver;
+    const options = new chrome.Options();
+    options.addArguments('--headless');
+    options.addArguments('--disable-gpu');
+    options.addArguments('--no-sandbox');
+    options.addArguments('--disable-dev-shm-usage');
+  
+    driver = await new Builder()
+      .forBrowser('chrome')
+      .setChromeOptions(options)
+      .build();
     try {
         // Navigate to the signup page
         // await driver.get('http://localhost:3000/');

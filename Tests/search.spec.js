@@ -1,8 +1,19 @@
 import { Builder, By, Key, until } from 'selenium-webdriver';
+import chrome from 'selenium-webdriver/chrome.js';
+
 import assert from 'assert';
 
 async function searchToolTest() {
-    let driver = await new Builder().forBrowser('chrome').build();
+    const options = new chrome.Options();
+    options.addArguments('--headless');
+    options.addArguments('--disable-gpu');
+    options.addArguments('--no-sandbox');
+    options.addArguments('--disable-dev-shm-usage');
+  
+    driver = await new Builder()
+      .forBrowser('chrome')
+      .setChromeOptions(options)
+      .build();
     try {
         // Navigate to the main page or dashboard where the search tool is located
         

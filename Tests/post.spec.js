@@ -1,12 +1,23 @@
 /* eslint-disable no-console */
 import { Builder, By, until } from 'selenium-webdriver';
+import chrome from 'selenium-webdriver/chrome.js';
+
 import assert from 'assert';
 
 (async function post() {
   let driver;
 
   try {
-    driver = await new Builder().forBrowser('chrome').build();
+    const options = new chrome.Options();
+  options.addArguments('--headless');
+  options.addArguments('--disable-gpu');
+  options.addArguments('--no-sandbox');
+  options.addArguments('--disable-dev-shm-usage');
+
+  driver = await new Builder()
+    .forBrowser('chrome')
+    .setChromeOptions(options)
+    .build();
     await driver.get('http://localhost:3000/');
 
     // login
