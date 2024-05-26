@@ -5,7 +5,10 @@ import assert from 'assert';
     let driver;
 
     try {
-        driver = await new Builder().forBrowser('chrome').build();
+      // driver = await new Builder().forBrowser('chrome').usingServer('http://192.168.1.126:4444/wd/hub').build();
+      driver = await new Builder().forBrowser('microsoft edge').usingServer('http://192.168.1.126:4444/wd/hub').build();
+
+        // driver = await new Builder().forBrowser('chrome').build();
     await driver.get('http://localhost:3000/');
     const title = await driver.getTitle();
     assert.equal(title, 'StudNet - Social Network');
