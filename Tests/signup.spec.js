@@ -20,6 +20,7 @@ import {
         options.addArguments('--disable-gpu');
         options.addArguments('--no-sandbox');
         options.addArguments('--disable-dev-shm-usage');
+        options.addArguments('--window-size=1920,1080');  // Set window size
   
         driver = await new Builder()
           .forBrowser('chrome')
@@ -32,6 +33,9 @@ import {
           .withCapabilities(Capabilities[browserConfig.browserName]())
           .build();
       }
+  
+      // Set the browser window size for Safari
+      await driver.manage().window().setRect({ width: 1920, height: 1080 });
   
       // Return to the login/signup
       await driver.get('http://localhost:3000/');

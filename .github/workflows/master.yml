@@ -28,6 +28,22 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
 
+      - name: Install Chromedriver
+        run: |
+          sudo apt-get install -y unzip
+          wget -N https://chromedriver.storage.googleapis.com/$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip
+          unzip chromedriver_linux64.zip
+          sudo mv chromedriver /usr/local/bin/
+          sudo chmod +x /usr/local/bin/chromedriver
+
+      - name: Start Selenium Grid Hub
+        run: java -jar selenium-server-standalone-4.21.0.jar hub &
+      
+      - name: Start Selenium Grid Node for Chrome
+        run: java -Dwebdriver.chrome.driver=/usr/local/bin/chromedriver -jar selenium-server-standalone-4.21.0.jar node -role node -hub http://localhost:4444/grid/register -browser "browserName=chrome,platform=LINUX" &
+      
+      - name: Wait for Selenium Grid to be ready
+        run: sleep 10
 
       - name: Run tests
         run: npm run test
