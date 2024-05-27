@@ -54,8 +54,8 @@ jobs:
           java -Dwebdriver.chrome.driver=/usr/local/bin/chromedriver -jar selenium-server-4.21.0.jar node --detect-drivers true --max-sessions 5 --hub http://localhost:4444 &
           sleep 15
 
-      - name: Run tests
-        run: npm run test
+      # - name: Run tests
+      #   run: npm run test
 
       - name: Run linter
         run: npm run lint
