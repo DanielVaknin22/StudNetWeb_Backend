@@ -60,7 +60,7 @@ import assert from 'assert';
     await driver.sleep(1000);
     await driver.findElement(By.css('input[name="phoneNumber"]')).sendKeys('0503698456');
     await driver.sleep(1000);
-    // await driver.findElement(By.css('button.accountButton')).click();
+    await driver.findElement(By.css('button.accountButton')).click();
     await driver.sleep(2000);
 
     //Followers
