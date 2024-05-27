@@ -32,6 +32,9 @@ import {
           .build();
       }
   
+      // Set the browser window size
+      await driver.manage().window().setRect({ width: 1920, height: 1080 });
+  
       // Navigate to the main page or dashboard where the search tool is located
       await driver.get('http://localhost:3000/');
       const title = await driver.getTitle();
@@ -46,28 +49,35 @@ import {
       const currentUrl = await driver.getCurrentUrl();
       assert.equal(currentUrl, 'http://localhost:3000/#/home');
   
-      // Locate the search button using a refined XPath     //*[@id="root"]/nav/div/div[1]/div/a[3]  //*[@id="root"]/nav/div/div[1]/div/a[3]
+      // Locate the search button using a refined XPath
       const searchButtonXPath = '//*[@id="root"]/nav/div/div[1]/div/a[3]';
       let searchButton = await driver.wait(until.elementLocated(By.xpath(searchButtonXPath)), 10000);
+  
+      // Scroll the search button into view before clicking
+      await driver.executeScript("arguments[0].scrollIntoView(true);", searchButton);
+      await driver.wait(until.elementIsVisible(searchButton), 10000);
+      await driver.wait(until.elementIsEnabled(searchButton), 10000);
+  
+      // Click the search button
       await searchButton.click();
   
       // Ensure the search input field is visible before interacting with it
-      const searchInputXPath = '//*[@id="searchText"]'; // Adjust if necessary
-      let searchInput = await driver.wait(until.elementIsVisible(driver.findElement(By.xpath(searchInputXPath))), 10000);
+      const searchInputXPath = '//*[@id="searchText"]';
+      let searchInput = await driver.wait(until.elementLocated(By.xpath(searchInputXPath)), 10000);
+      await driver.wait(until.elementIsVisible(searchInput), 10000);
       await searchInput.sendKeys('Raphael Benoliel', Key.RETURN);
   
       // Assuming the application redirects to a search results page, we wait for the page to load
       await driver.wait(until.urlContains('search'), 10000);
+  
       // Verify that search results are displayed
       let searchResults = await driver.findElements(By.css('p.sc-eKYjST.hMfRnh'));
-  
       // Verify that the results contain the expected text
       for (let result of searchResults) {
         let resultText = await result.getText();
         assert(resultText.includes('Raphael Benoliel'), 'Search result does not contain the expected text.');
       }
   
-      // Optionally, verify that the results are relevant to the search term
       console.log(`Search tool test passed successfully for ${browserConfig.browserName}!`);
     } catch (error) {
       console.error(`Search tool test failed for ${browserConfig.browserName}:`, error);
