@@ -28,11 +28,22 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
 
+      - name: Get Chrome version
+        id: chrome-version
+        run: google-chrome --version
+
       - name: Set up ChromeDriver
-        uses: nanasess/setup-chromedriver@v2
-        with:
-          # Set to an appropriate version, or omit to match Chrome's version automatically
-          chromedriver-version: '114.0.5735.90'
+        run: |
+          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
+          echo "Detected Chrome version: $CHROME_VERSION"
+          CHROMEDRIVER_VERSION=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json | jq -r --arg version "$CHROME_VERSION" '.versions[] | select(.version | startswith($version)) | .version' | head -n 1)
+          echo "Matched ChromeDriver version: $CHROMEDRIVER_VERSION"
+          if [ -z "$CHROMEDRIVER_VERSION" ]; then exit 1; fi
+          CHROMEDRIVER_URL=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json | jq -r --arg version "$CHROMEDRIVER_VERSION" '.versions[] | select(.version == $version) | .downloads.chromedriver[] | select(.platform == "linux64") | .url')
+          wget -N $CHROMEDRIVER_URL -O chromedriver-linux64.zip
+          unzip chromedriver-linux64.zip -d chromedriver-linux64
+          sudo mv chromedriver-linux64/chromedriver /usr/local/bin/
+          sudo chmod +x /usr/local/bin/chromedriver
 
       - name: Start Xvfb
         run: |
@@ -44,19 +55,16 @@ jobs:
           wget https://github.com/SeleniumHQ/selenium/releases/download/selenium-4.21.0/selenium-server-4.21.0.jar -O selenium-server-4.21.0.jar
 
       - name: Start Selenium Grid Hub
-        run: java -jar selenium-server-4.21.0.jar hub &
-      
-      - name: Wait for Selenium Grid Hub to start
-        run: sleep 15
+        run: |
+          java -jar selenium-server-4.21.0.jar hub &
+          sleep 15
 
       - name: Start Selenium Grid Node for Chrome
         run: |
           export DISPLAY=:99
           chromedriver --url-base=/wd/hub &
-          java -Dwebdriver.chrome.driver=$(which chromedriver) -jar selenium-server-4.21.0.jar node --detect-drivers true --max-sessions 5 --hub http://localhost:4444 &
-      
-      - name: Wait for Selenium Grid Nodes to register
-        run: sleep 15
+          java -Dwebdriver.chrome.driver=/usr/local/bin/chromedriver -jar selenium-server-4.21.0.jar node --detect-drivers true --max-sessions 5 --hub http://localhost:4444 &
+          sleep 15
 
       - name: Run tests
         run: npm run test
