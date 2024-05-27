@@ -24,7 +24,6 @@ jobs:
       - run:
           name: Install ChromeDriver
           command: |
-            sudo apt-get install -y curl
             CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+' | head -1)
             MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d '.' -f 1)
             CHROMEDRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE_$MAJOR_VERSION)
@@ -45,4 +44,18 @@ jobs:
 workflows:
   example-workflow:
     jobs:
-      - cicd-tests-and-lint
+      - cicd-tests-and-lint:
+          filters:
+            branches:
+              only: master
+            ignore:
+              - /^release-.*$/
+      - cicd-tests-and-lint:
+          filters:
+            branches:
+              only:
+                - master
+                - develop
+            ignore:
+              - /^hotfix-.*$/
+              - /^bugfix-.*$/
