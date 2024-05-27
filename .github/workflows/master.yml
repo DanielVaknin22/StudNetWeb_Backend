@@ -1,0 +1,57 @@
+name: CI/CD Pipeline
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.20.0'
+
+      - name: Install npm packages
+        run: npm install
+
+      - name: Install Google Chrome
+        run: |
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      - name: Install ChromeDriver
+        run: |
+          sudo apt-get install -y curl
+          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+' | head -1)
+          MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d '.' -f 1)
+          CHROMEDRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE_$MAJOR_VERSION)
+          if [ -z "$CHROMEDRIVER_VERSION" ]; then
+            echo "Failed to fetch ChromeDriver version"
+            exit 1
+          fi
+          wget -N https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
+          if [ $? -ne 0 ]; then
+            echo "Failed to download ChromeDriver"
+            exit 1
+          fi
+          unzip chromedriver_linux64.zip -d /usr/local/bin/
+          sudo chmod +x /usr/local/bin/chromedriver
+          rm chromedriver_linux64.zip
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Run linter
+        run: npm run lint
+
+      - name: CD - Deploy the service
+        run: curl "https://api.render.com/deploy/srv-cggq95u4daddcg5bi3lg?key=RGWdF_OJ_JI"
