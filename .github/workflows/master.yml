@@ -28,11 +28,17 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
 
+      - name: Find the latest matching ChromeDriver version
+        id: chromedriver-version
+        run: |
+          LATEST_CHROMEDRIVER_VERSION=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/latest-patch-versions.json | jq -r '.builds["125.0.6422.112"].version')
+          echo "CHROMEDRIVER_VERSION=${LATEST_CHROMEDRIVER_VERSION}" >> $GITHUB_ENV
+
       - name: Install Chromedriver
         run: |
           sudo apt-get install -y unzip
-          wget -N https://chromedriver.storage.googleapis.com/$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip
-          unzip chromedriver_linux64.zip
+          wget -N https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/${CHROMEDRIVER_VERSION}/linux64/chromedriver-linux64.zip
+          unzip chromedriver-linux64.zip
           sudo mv chromedriver /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
 
