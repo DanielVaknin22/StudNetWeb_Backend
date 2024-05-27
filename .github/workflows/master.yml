@@ -28,7 +28,16 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
 
-      
+      - name: Set up ChromeDriver
+        uses: nanasess/setup-chromedriver@v2
+        with:
+          # Set to an appropriate version, or omit to match Chrome's version automatically
+          chromedriver-version: '114.0.5735.90'
+
+      - name: Start Xvfb
+        run: |
+          export DISPLAY=:99
+          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
 
       - name: Download Selenium Server
         run: |
@@ -41,7 +50,10 @@ jobs:
         run: sleep 15
 
       - name: Start Selenium Grid Node for Chrome
-        run: java -Dwebdriver.chrome.driver=/usr/local/bin/chromedriver -jar selenium-server-4.21.0.jar node --detect-drivers true --max-sessions 5 --hub http://localhost:4444 &
+        run: |
+          export DISPLAY=:99
+          chromedriver --url-base=/wd/hub &
+          java -Dwebdriver.chrome.driver=$(which chromedriver) -jar selenium-server-4.21.0.jar node --detect-drivers true --max-sessions 5 --hub http://localhost:4444 &
       
       - name: Wait for Selenium Grid Nodes to register
         run: sleep 15
