@@ -5,8 +5,8 @@ import assert from 'assert';
     let driver;
 
     try {
-      // driver = await new Builder().forBrowser('chrome').usingServer('http://192.168.1.126:4444/wd/hub').build();
-      driver = await new Builder().forBrowser('microsoft edge').usingServer('http://192.168.1.126:4444/wd/hub').build();
+      driver = await new Builder().forBrowser('chrome').build();
+      // driver = await new Builder().forBrowser('crome').usingServer('http://192.168.1.126:4444/wd/hub').build();
 
         // driver = await new Builder().forBrowser('chrome').build();
     await driver.get('http://localhost:3000/');
@@ -25,21 +25,33 @@ import assert from 'assert';
     // Getting to Nav Bar && profile page
     await driver.sleep(1000);
     await driver.get('http://localhost:3000/#/profile');
-    await driver.sleep(2000);
+    // await driver.sleep(2000);
     // Gatting to the search page
     await driver.get('http://localhost:3000/#/search');
-    await driver.sleep(2000);
+    // await driver.sleep(2000);
     // Getting to the tools page
     await driver.get('http://localhost:3000/#/tools');
-    await driver.sleep(2000);
+    // await driver.sleep(2000);
     // Getting to the terms page
     await driver.get('http://localhost:3000/#/terms');
-    await driver.sleep(2000);
+    // await driver.sleep(2000);
     // Getting to the about page
     await driver.get('http://localhost:3000/#/about');
-    await driver.sleep(2000);
+    // await driver.sleep(2000);
     // Getting to the contact page
     await driver.get('http://localhost:3000/#/terms');
+    await driver.sleep(2000);
+    // await driver.get('http://localhost:3000/#/a/my-area');
+    await driver.findElement(By.xpath('//*[@id="root"]/nav/div/div[2]/div/button')).click();
+    await driver.sleep(2000);
+    await driver.findElement(By.xpath('//*[@id="personal-area"]')).click();
+    await driver.sleep(2000);
+    await driver.findElement(By.xpath('//*[@id="root"]/nav/div/div[2]/div/button')).click();
+    await driver.sleep(2000);
+    await driver.findElement(By.xpath('//*[@id="account-menu"]/div[3]/ul/li[3]')).click();
+    await driver.sleep(2000);
+
+
     
     
 
