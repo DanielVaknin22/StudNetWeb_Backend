@@ -1,22 +1,13 @@
 import { Builder, By, until } from 'selenium-webdriver';
-import chrome from 'selenium-webdriver/chrome.js';
-
 import assert from 'assert';
 //
 (async function editProfile() {
   let driver;
-  const options = new chrome.Options();
-  options.addArguments('--headless');
-  options.addArguments('--disable-gpu');
-  options.addArguments('--no-sandbox');
-  options.addArguments('--disable-dev-shm-usage');
 
-  driver = await new Builder()
-    .forBrowser('chrome')
-    .setChromeOptions(options)
-    .build();
   try {
-    // driver = await new Builder().forBrowser('chrome').build();
+    driver = await new Builder().forBrowser('chrome').build();
+      // driver = await new Builder().forBrowser('crome').usingServer('http://192.168.1.126:4444/wd/hub').build();
+
     await driver.get('http://localhost:3000/');
     const title = await driver.getTitle();
     assert.equal(title, 'StudNet - Social Network');
@@ -32,7 +23,9 @@ import assert from 'assert';
 
     // Getting to editing a profile through the navBar
     await driver.get('http://localhost:3000/#/profile');
+    await driver.sleep(3000);
     await driver.findElement(By.css('button.sc-bSkxYT.dWSFze')).click();
+    await driver.sleep(2000);
 
     // Editing the profile
     await driver.findElement(By.css('button.accountButton')).click();
@@ -71,7 +64,7 @@ import assert from 'assert';
     await driver.sleep(1000);
     await driver.findElement(By.css('input[name="phoneNumber"]')).sendKeys('0503698456');
     await driver.sleep(1000);
-    await driver.findElement(By.css('button.accountButton')).click();
+    // await driver.findElement(By.css('button.accountButton')).click();
     await driver.sleep(2000);
 
     //Followers

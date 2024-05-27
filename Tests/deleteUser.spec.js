@@ -57,9 +57,9 @@ import assert from 'assert';
         await driver.sleep(2000);
         await driver.findElement(By.xpath('/html/body/div[2]/div[3]/div/div[2]/button[2]')).click();
 
-        console.log('Test passed!');
+        console.log('Test passed Delete User!');
     } catch (e) {
-        console.error('Test failed:', e);
+        console.error('Test failed:Delet User', e);
     } finally {
         await driver.quit();
     }

@@ -23,7 +23,7 @@ import {
         driver = await new Builder()
           .forBrowser('chrome')
           .setChromeOptions(options)
-          .usingServer('http://localhost:4444/wd/hub')
+          .usingServer('http://localhost:3000/')
           .build();
       } else {
         driver = await new Builder()

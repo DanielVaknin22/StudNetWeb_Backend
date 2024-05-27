@@ -56,9 +56,9 @@ import assert from 'assert';
     
 
     
-    console.log('Test passed!');
+    console.log('Test passed!: Nav Bar!');
 } catch (e) {
-  console.error('Test failed:', e);
+  console.error('Test failed: Nav Bar', e);
 } finally {
   await driver.quit();
 }
