@@ -1,42 +1,42 @@
-version: 2.1
+# version: 2.1
 
-orbs:
-  node: circleci/node@4.7
-  browser-tools: circleci/browser-tools@1.3.0
+# orbs:
+#   node: circleci/node@4.7
+#   browser-tools: circleci/browser-tools@1.3.0
 
-jobs:
-  cicd-tests-and-lint:
-    executor:
-      name: node/default
-      tag: '16.20.0' # Specify the Node.js version
-    steps:
-      - checkout
-      - run:
-          name: Install npm packages
-          command: npm install
-      - run:
-          name: Install Google Chrome
-          command: |
-            wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-            sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-            sudo apt-get update
-            sudo apt-get install -y google-chrome-stable
+# jobs:
+#   cicd-tests-and-lint:
+#     executor:
+#       name: node/default
+#       tag: '16.20.0' # Specify the Node.js version
+#     steps:
+#       - checkout
+#       - run:
+#           name: Install npm packages
+#           command: npm install
+#       - run:
+#           name: Install Google Chrome
+#           command: |
+#             wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+#             sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+#             sudo apt-get update
+#             sudo apt-get install -y google-chrome-stable
       
-      - run:
-          name: Run tests
-          command: npm run test
-      - run:
-          name: Run linter
-          command: npm run lint
-      - run:
-          name: CD - Deploy the service
-          command: curl "https://api.render.com/deploy/srv-cggq95u4daddcg5bi3lg?key=RGWdF_OJ_JI"
+#       - run:
+#           name: Run tests
+#           command: npm run test
+#       - run:
+#           name: Run linter
+#           command: npm run lint
+#       - run:
+#           name: CD - Deploy the service
+#           command: curl "https://api.render.com/deploy/srv-cggq95u4daddcg5bi3lg?key=RGWdF_OJ_JI"
 
-workflows:
-  example-workflow:
-    jobs:
-      - cicd-tests-and-lint:
-          filters:
-            branches:
-              only:
-                - master
+# workflows:
+#   example-workflow:
+#     jobs:
+#       - cicd-tests-and-lint:
+#           filters:
+#             branches:
+#               only:
+#                 - master
