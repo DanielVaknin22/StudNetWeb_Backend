@@ -6,6 +6,8 @@ import assert from 'assert';
     
     try {
         driver = await new Builder().forBrowser('chrome').build();
+      // driver = await new Builder().forBrowser('crome').usingServer('http://192.168.1.126:4444/wd/hub').build();
+
         await driver.get('http://localhost:3000/');
         const title = await driver.getTitle();
         assert.equal(title, 'StudNet - Social Network');
