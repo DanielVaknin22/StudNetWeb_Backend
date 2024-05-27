@@ -8,8 +8,7 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "test": "mocha Tests/*.spec.js --color",
-    "lint": "eslint src/* --color",
-    "ci:test": "CHROME_BIN=/usr/bin/google-chrome mocha Tests/*.spec.js --color"
+    "lint": "eslint src/* --color"
   },
   "repository": {
     "type": "git",
