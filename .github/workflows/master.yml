@@ -38,7 +38,7 @@ jobs:
 
       - name: Download Selenium Server
         run: |
-          wget https://selenium-release.storage.googleapis.com/4.21/selenium-server-4.21.0.jar -O selenium-server-4.21.0.jar
+          wget https://github.com/SeleniumHQ/selenium/releases/download/selenium-4.21.0/selenium-server-4.21.0.jar -O selenium-server-4.21.0.jar
 
       - name: Start Selenium Grid Hub
         run: java -jar selenium-server-4.21.0.jar hub &
