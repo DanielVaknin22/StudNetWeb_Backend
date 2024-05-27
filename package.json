@@ -8,7 +8,8 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "test": "mocha Tests/*.spec.js --color",
-    "lint": "eslint src/* --color"
+    "lint": "eslint src/* --color",
+    "ci:test": "CHROME_BIN=/usr/bin/google-chrome mocha Tests/*.spec.js --color"
   },
   "repository": {
     "type": "git",
@@ -37,7 +38,6 @@
     "eslint": "^8.37.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.27.5",
-    "mocha": "^10.4.0",
     "webdriver-manager": "^12.1.9"
   }
 }
