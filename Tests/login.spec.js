@@ -77,11 +77,7 @@ const browsers = [
 async function runTest(browserConfig) {
   let driver;
   try {
-    driver = await new Builder()
-      .usingServer('http://192.168.1.188:4444/wd/hub')
-      .withCapabilities(Capabilities[browserConfig.browserName]())
-      .build();
-
+    driver = await new Builder().forBrowser('chrome').build();
     await driver.get('http://localhost:3000/');
     const title = await driver.getTitle();
     assert.equal(title, 'StudNet - Social Network');
