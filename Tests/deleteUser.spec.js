@@ -25,7 +25,14 @@ import assert from 'assert';
 
     // Editing the profile
     await driver.findElement(By.css('button.accountButton')).click();
-    await driver.findElement(By.css('button.DeleteMyAccount')).click();
+    await driver.sleep(2000);
+    await driver.findElement(By.xpath('//*[@id="panel:r1:0"]/div/div/form/button')).click();
+    await driver.sleep(2000);
+    await driver.findElement(By.xpath('/html/body/div[2]/div[3]/div/div[2]/button[1]')).click();
+    await driver.sleep(2000);
+    await driver.findElement(By.xpath('//*[@id="panel:r1:0"]/div/div/form/button')).click();
+    await driver.sleep(2000);
+    await driver.findElement(By.xpath('/html/body/div[2]/div[3]/div/div[2]/button[2]')).click();
 
       
     console.log('Test passed!');
