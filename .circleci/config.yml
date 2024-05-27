@@ -22,25 +22,6 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y google-chrome-stable
       - run:
-          name: Install ChromeDriver
-          command: |
-            sudo apt-get install -y curl
-            CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+' | head -1)
-            MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d '.' -f 1)
-            CHROMEDRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE_$MAJOR_VERSION)
-            if [ -z "$CHROMEDRIVER_VERSION" ]; then
-              echo "Failed to fetch ChromeDriver version"
-              exit 1
-            fi
-            wget -N https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
-            if [ $? -ne 0 ]; then
-              echo "Failed to download ChromeDriver"
-              exit 1
-            fi
-            unzip chromedriver_linux64.zip -d /usr/local/bin/
-            sudo chmod +x /usr/local/bin/chromedriver
-            rm chromedriver_linux64.zip
-      - run:
           name: Run tests
           command: npm run test
       - run:
