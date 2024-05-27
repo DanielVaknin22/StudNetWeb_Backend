@@ -36,14 +36,21 @@ jobs:
           sudo mv chromedriver /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
 
+      - name: Download Selenium Server
+        run: |
+          wget https://selenium-release.storage.googleapis.com/4.21/selenium-server-4.21.0.jar -O selenium-server-4.21.0.jar
+
       - name: Start Selenium Grid Hub
-        run: java -jar selenium-server-standalone-4.21.0.jar hub &
+        run: java -jar selenium-server-4.21.0.jar hub &
       
+      - name: Wait for Selenium Grid Hub to start
+        run: sleep 15
+
       - name: Start Selenium Grid Node for Chrome
-        run: java -Dwebdriver.chrome.driver=/usr/local/bin/chromedriver -jar selenium-server-standalone-4.21.0.jar node -role node -hub http://localhost:4444/grid/register -browser "browserName=chrome,platform=LINUX" &
+        run: java -Dwebdriver.chrome.driver=/usr/local/bin/chromedriver -jar selenium-server-4.21.0.jar node --detect-drivers true --max-sessions 5 --hub http://localhost:4444 &
       
-      - name: Wait for Selenium Grid to be ready
-        run: sleep 10
+      - name: Wait for Selenium Grid Nodes to register
+        run: sleep 15
 
       - name: Run tests
         run: npm run test
