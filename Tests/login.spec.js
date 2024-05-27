@@ -122,8 +122,7 @@ async function runTest(browserConfig) {
 
     await driver.wait(until.urlIs('http://localhost:3000/#/home'), 10000);
     const currentUrl = await driver.getCurrentUrl();
-    assert.equal(currentUrl, 'http://localhost:3000/#/home');
-
+    assert.equal(currentUrl, 'http://localhost:3000/#/home'); ///
     console.log('login Test passed!');
   } catch (e) {
     console.error(`login Test failed for ${browserConfig.browserName}:`, e);
