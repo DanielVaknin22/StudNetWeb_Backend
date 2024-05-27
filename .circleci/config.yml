@@ -47,14 +47,10 @@ workflows:
       - cicd-tests-and-lint:
           filters:
             branches:
-              only: master
-            ignore:
-              - /^release-.*$/
-      - cicd-tests-and-lint:
-          filters:
-            branches:
               only:
                 - master
-            ignore:
-              - /^hotfix-.*$/
-              - /^bugfix-.*$/
+                - develop
+              ignore:
+                - /^release-.*$/
+                - /^hotfix-.*$/
+                - /^bugfix-.*$/
