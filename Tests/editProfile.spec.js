@@ -1,8 +1,7 @@
 import { Builder, By, until } from 'selenium-webdriver';
 import chrome from 'selenium-webdriver/chrome.js';
-
 import assert from 'assert';
-//
+
 (async function editProfile() {
   let driver;
   const options = new chrome.Options();
@@ -10,13 +9,13 @@ import assert from 'assert';
   options.addArguments('--disable-gpu');
   options.addArguments('--no-sandbox');
   options.addArguments('--disable-dev-shm-usage');
+  options.addArguments('--window-size=1920,1080');  // Set window size
 
   driver = await new Builder()
     .forBrowser('chrome')
     .setChromeOptions(options)
     .build();
   try {
-    // driver = await new Builder().forBrowser('chrome').build();
     await driver.get('http://localhost:3000/');
     const title = await driver.getTitle();
     assert.equal(title, 'StudNet - Social Network');
@@ -30,12 +29,27 @@ import assert from 'assert';
     const currentUrl = await driver.getCurrentUrl();
     assert.equal(currentUrl, 'http://localhost:3000/#/home');
 
-    // Getting to editing a profile through the navBar
-    await driver.get('http://localhost:3000/#/profile');
-    await driver.findElement(By.css('button.sc-bSkxYT.dWSFze')).click();
+    // Getting to editing a profile through the navBar   
+    await driver.get('http://localhost:3000/#/home');
+    // await driver.wait(until.elementIsVisible(driver.findElement(By.css('button.sc-bSkxYT.dWSFze'))), 10000);
+    // await driver.executeScript('arguments[0].scrollIntoView(true);', driver.findElement(By.css('button.sc-bSkxYT.dWSFze')));
+    await driver.findElement(By.xpath('//*[@id="root"]/nav/div/div[1]/div/a[2]')).click();
+    
+
 
     // Editing the profile
-    await driver.findElement(By.css('button.accountButton')).click();
+    await driver.findElement(By.xpath('//*[@id="root"]/div/div/table/td[1]/h1/button')).click();
+    let edithButton = await driver.wait(until.elementLocated(By.xpath('//*[@id="panel:r1:0"]/div/div/form/p[4]/button')), 10000);
+    await driver.executeScript("arguments[0].scrollIntoView(true);", edithButton);
+    await driver.wait(until.elementIsVisible(edithButton), 10000);
+    await driver.wait(until.elementIsEnabled(edithButton), 10000);
+
+    // Click the search button
+    await edithButton.click();
+
+    // await driver.findElement(By.xpath('//*[@id="panel:r7:0"]/div/div/form/p[4]/button')).click();//second //*[@id="root"]/div/div/table/td[1]/h1/button
+
+    await driver.wait(until.elementIsVisible(driver.findElement(By.css('input[name="userName"]'))), 10000);
     await driver.findElement(By.css('input[name="userName"]')).clear();
     await driver.findElement(By.css('input[name="userName"]')).sendKeys('BarGg');
     await driver.findElement(By.css('input[name="firstName"]')).clear();
@@ -43,10 +57,8 @@ import assert from 'assert';
     await driver.findElement(By.css('input[name="lastName"]')).clear();
     await driver.findElement(By.css('input[name="lastName"]')).sendKeys('Cohen');
     await driver.findElement(By.css('button.accountButton')).click();
-    // await driver.sleep(5000)
 
     // Editing the password
-    // Click on the "Password" tab
     await driver.findElement(By.css('.react-tabs__tab-list > .react-tabs__tab:nth-child(2)')).click();
     await driver.sleep(1000);
     await driver.findElement(By.css('input[placeholder="Current Password"]')).sendKeys('Maor123456789');
@@ -58,13 +70,10 @@ import assert from 'assert';
     await driver.findElement(By.css('.react-tabs__tab-list > .react-tabs__tab:nth-child(3)')).click();
     await driver.findElement(By.css('button.accountButton')).click();
     await driver.sleep(1000);
-    // await driver.findElement(By.css('input[name="Profile Picture"]')).click();
     await driver.findElement(By.css('input[name="country"]')).sendKeys('Israel');
     await driver.findElement(By.css('input[name="studySubject"]')).sendKeys('Software Engineering');
     await driver.findElement(By.id('mui-component-select-schoolYear')).click();
     await driver.sleep(500);
-    // Wait for a short duration to ensure the options are visible
-    // Find the option corresponding to "Fourth year" and click on it
     await driver.findElement(By.xpath('//li[text()="Fourth year"]')).click();
     await driver.sleep(1000);
     await driver.findElement(By.id(':r3:')).sendKeys('I am a software engineering student at SCE');
@@ -74,31 +83,36 @@ import assert from 'assert';
     await driver.findElement(By.css('button.accountButton')).click();
     await driver.sleep(2000);
 
-    //Followers
-    await driver.findElement(By.css('.react-tabs__tab-list > .react-tabs__tab:nth-child(4)')).click();
-    await driver.sleep(1000);
+    await driver.get('http://localhost:3000/#/my-area');
+    const currentUrl2 = await driver.getCurrentUrl();
+    console.log(currentUrl2);
 
-    //Following
-    await driver.findElement(By.css('.react-tabs__tab-list > .react-tabs__tab:nth-child(5)')).click();
-    await driver.sleep(1000);
+    // Click on the "Followers" tab using XPath  //*[@id="tab:r1:3"]
+    const followersTab = await driver.findElement(By.xpath('//li[@id="tab:r1:3"]'));
+    await driver.executeScript("arguments[0].click();", followersTab);
 
-    //Posts Liked
-    await driver.findElement(By.css('.react-tabs__tab-list > .react-tabs__tab:nth-child(6)')).click();
-    await driver.sleep(1000);
+     await driver.sleep(1000);
+     //Following   //*[@id="tab:r5:4"]
+     const followersTab2 = await driver.findElement(By.xpath('//li[@id="tab:r1:4"]'));
+    await driver.executeScript("arguments[0].click();", followersTab2);
 
-    //Post Saved
-    await driver.findElement(By.css('.react-tabs__tab-list > .react-tabs__tab:nth-child(7)')).click();
-    await driver.sleep(1000);
+     await driver.sleep(1000);
+     //Posts Liked   //*[@id="tab:r5:5"]
+     const followersTab3 = await driver.findElement(By.xpath('//li[@id="tab:r1:5"]'));
+    await driver.executeScript("arguments[0].click();", followersTab3);
+     await driver.sleep(1000);
+     //Post Saved     //*[@id="tab:r5:6"]
+     const followersTab4 = await driver.findElement(By.xpath('//li[@id="tab:r1:6"]'));
+    await driver.executeScript("arguments[0].click();", followersTab4);
+     await driver.sleep(1000);
+     //Statistics   //*[@id="tab:r5:7"]
+     const followersTab5 = await driver.findElement(By.xpath('//li[@id="tab:r1:7"]'));
+    await driver.executeScript("arguments[0].click();", followersTab5);
+     await driver.sleep(1000);
 
-    //Statistics
-    await driver.findElement(By.css('.react-tabs__tab-list > .react-tabs__tab:nth-child(8)')).click();
-    await driver.sleep(1000);
-
-
-    
-    console.log('Test passed!');
+    console.log('Edit profile Test passed!');
   } catch (e) {
-    console.error('Test failed:', e);
+    console.error('Edit profile Test failed:', e);
   } finally {
     await driver.quit();
   }

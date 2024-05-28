@@ -13,6 +13,8 @@ import assert from 'assert';
   options.addArguments('--disable-gpu');
   options.addArguments('--no-sandbox');
   options.addArguments('--disable-dev-shm-usage');
+  options.addArguments('--window-size=1920,1080');  // Set window size
+
 
   driver = await new Builder()
     .forBrowser('chrome')
